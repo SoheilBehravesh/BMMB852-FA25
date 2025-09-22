@@ -1,6 +1,6 @@
 *Hello* **Dr. Albert**
 
-## Assintment for Week 1
+## Assignment for Week 1
 
 ##### What version is your samtools command in the bioinfo environment?
 ```bash
