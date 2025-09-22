@@ -1,6 +1,6 @@
 *Hello* **Dr. Albert**
 
-## BMMB852 Assintment01
+## Assintment for Week 1
 
 ##### What version is your samtools command in the bioinfo environment?
 ```bash
@@ -11,7 +11,22 @@ It is 1.22.1
 
 ##### Show commands needed to create a nested directory structure
 ```bash
-mkdir -p project/data/raw
+mkdir 
+cd
 ```
 
+##### Show commands that create files in different directories
+```bash
+touch
+ls #for checking if the new file has been created
+```
 
+##### Show how to use relative and absolute paths
+```bash
+# absolutepath
+cd /home/soheil/project/data
+
+# relative path
+cd data
+```
+The difference is that absolute path starts with '/'. Relative path supposes that I am already in */home/soheil/project*.
