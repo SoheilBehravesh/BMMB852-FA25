@@ -19,6 +19,7 @@ cd
 ```bash
 touch
 ls #for checking if the new file has been created
+mv # it does not create files or folders directly, but at least can move new files into a new (sub)directory
 ```
 
 ##### Show how to use relative and absolute paths
