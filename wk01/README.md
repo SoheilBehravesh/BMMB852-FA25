@@ -25,9 +25,9 @@ mv # it does not create files or folders directly, but at least can move new fil
 ##### Show how to use relative and absolute paths
 ```bash
 # absolutepath
-cd /home/soheil/project/data
+cd /home/soheil/edu # OR better to mention as ~/edu
 
 # relative path
-cd data
+cd edu
 ```
-The difference is that absolute path starts with '/'. Relative path supposes that I am already in */home/soheil/project*.
+The difference is that absolute path starts with '/'. Relative path supposes that I am already in */home/soheil/edu*.
