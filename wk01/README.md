@@ -30,4 +30,4 @@ cd /home/soheil/edu # OR better to mention as ~/edu
 # relative path
 cd edu
 ```
-The difference is that absolute path starts with '/'. Relative path supposes that I am already in */home/soheil/edu*.
+The difference is that absolute path starts with '/' or *root*. Relative path supposes that I am already in */home/soheil/edu*.
