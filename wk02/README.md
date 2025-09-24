@@ -21,50 +21,8 @@ cat Callithrix_jacchus.mCalJac1.pat.X.115.gff3 | grep -v '#' > Marmoset.gff3 #re
 cat Marmoset.gff3 | cut -f 3 | sort | uniq -c | sort -r -n
 ```
 Here is the outputs:
-
-617853 exon
-
-556002 CDS
-
-79696 biological_region 
-
-48570 mRNA 
-
-44437 five_prime_UTR 
-
-25122 three_prime_UTR 
-
-22078 gene
-
-16815 ncRNA_gene
-
-11321 lnc_RNA
-
-4204 transcript
-
-3083 snRNA
-
-1501 snoRNA
-
-1295 pseudogenic_transcript
-
-1295 pseudogene
-
-937 Y_RNA
-
-540 miRNA
-
-352 region
-
-213 rRNA
-
-97 V_gene_segment
-
-49 scRNA
-
-12 J_gene_segment
-
-4 C_gene_segment
+617853 exon/ 
+556002 CDS/ 79696 biological_region/ 48570 mRNA/ 44437 five_prime_UTR/ 25122 three_prime_UTR/ 22078 gene/ 16815 ncRNA_gene/ 11321 lnc_RNA/ 4204 transcript/ 3083 snRNA/ 1501 snoRNA/ 1295 pseudogenic_transcript/ 1295 pseudogene/ 937 Y_RNA/ 540 miRNA/ 352 region/ 213 rRNA/ 97 V_gene_segment/ 49 scRNA/ 12 J_gene_segment/ 4 C_gene_segment
 
 ```bash
 cat Marmoset.gff3 | grep -v "^#" | cut -f 3 | sort | uniq | wc -l
@@ -77,7 +35,7 @@ based on the above output, there are 22078 genes.
 
 #### Is there a feature type that you may have not heard about before? What is the feature and how is it defined? (If there is no such feature, pick a common feature.)
 
-Yes, I don't know what these features 'biological_region', 'region', and (in this context) 'scRNA' mean. It is suprising that the annotations has 'V/J/C_gene_segment' but not something as 'D-gene_segment' for the antibodies. Now, I asked from our friend chatgpt whar these three features in the gff3 file. and it mentions, 'biological_region' is a broad functional region (sth like regulatory regions such as enhancers which I am really interested in these regions, cause I beleive they contribute alot in the process of evolution), 'region' is a large structural chunck (such as chromosome, conting, scaffold), and 'scRNA' which here means small cytoplasmic RNA (which I first though it is single-cell RNA)
+Yes, I don't know what these features 'biological_region', 'region', and (in this context) 'scRNA' mean. It is suprising that the annotations has 'V/J/C_gene_segment' but not something as 'D-gene_segment' for the antibodies. Now, I asked from our friend chatgpt about these three features in the gff3 file. and it mentions, 'biological_region' is a broad functional region (sth like regulatory regions such as enhancers which I am really interested in these regions, cause recent studies show that they contribute alot in the process of evolution of a species), 'region' is a large structural chunck (such as chromosome, conting, scaffold), and 'scRNA' which here means small cytoplasmic RNA (which I first though it is single-cell RNA)
 
 #### What are the top-ten most annotated feature types (column 3) across the genome?
 we can check it based on the above answer, but it is always preferrable to do it with coding.
@@ -85,26 +43,7 @@ we can check it based on the above answer, but it is always preferrable to do it
 cat Marmoset.gff3 | cut -f 3 | sort | uniq -c | sort -r -n | head
 ```
 here is the output:
-
-617853 exon 
-
-56002 CDS 
-
-79696 biological_region 
-
-48570 mRNA 
-
-44437 five_prime_UTR 
-
-25122 three_prime_UTR 
-
-22078 gene 
-
-16815 ncRNA_gene 
-
-11321 lnc_RNA 
-
-4204 transcript
+617853 exon/ 56002 CDS/ 79696 biological_region/ 48570 mRNA/ 44437 five_prime_UTR/ 25122 three_prime_UTR/ 22078 gene/ 16815 ncRNA_gene/ 11321 lnc_RNA/ 4204 transcript
 
 #### Having analyzed this GFF file, does it seem like a complete and well-annotated organism?
 I think so. It contains all the expected chromosomes. Higher numbers of mRNA compared to genes because of alternative splicing. the number of genes make sense and it is close to 20-22k in our genus. So, it looks fine in my perspective, but I am not sure cause I am not an expert in this field.
