@@ -21,8 +21,29 @@ cat Callithrix_jacchus.mCalJac1.pat.X.115.gff3 | grep -v '#' > Marmoset.gff3 #re
 cat Marmoset.gff3 | cut -f 3 | sort | uniq -c | sort -r -n
 ```
 Here is the outputs:
-617853 exon/ 
-556002 CDS/ 79696 biological_region/ 48570 mRNA/ 44437 five_prime_UTR/ 25122 three_prime_UTR/ 22078 gene/ 16815 ncRNA_gene/ 11321 lnc_RNA/ 4204 transcript/ 3083 snRNA/ 1501 snoRNA/ 1295 pseudogenic_transcript/ 1295 pseudogene/ 937 Y_RNA/ 540 miRNA/ 352 region/ 213 rRNA/ 97 V_gene_segment/ 49 scRNA/ 12 J_gene_segment/ 4 C_gene_segment
+
+617853  exon    
+556002 CDS  
+79696 biological_region     
+48570 mRNA      
+44437 five_prime_UTR    
+25122 three_prime_UTR   
+22078 gene      
+16815 ncRNA_gene    
+11321 lnc_RNA   
+4204 transcript     
+3083 snRNA      
+1501 snoRNA     
+1295 pseudogenic_transcript     
+1295 pseudogene     
+937 Y_RNA      
+540 miRNA   
+352 region  
+213 rRNA    
+97 V_gene_segment   
+49 scRNA    
+12 J_gene_segment   
+4 C_gene_segment
 
 ```bash
 cat Marmoset.gff3 | grep -v "^#" | cut -f 3 | sort | uniq | wc -l
@@ -43,7 +64,16 @@ we can check it based on the above answer, but it is always preferrable to do it
 cat Marmoset.gff3 | cut -f 3 | sort | uniq -c | sort -r -n | head
 ```
 here is the output:
-617853 exon/ 56002 CDS/ 79696 biological_region/ 48570 mRNA/ 44437 five_prime_UTR/ 25122 three_prime_UTR/ 22078 gene/ 16815 ncRNA_gene/ 11321 lnc_RNA/ 4204 transcript
+617853 exon     
+56002 CDS   
+79696 biological_region     
+48570 mRNA      
+44437 five_prime_UTR    
+25122 three_prime_UTR   
+22078 gene      
+16815 ncRNA_gene    
+11321 lnc_RNA   
+4204 transcript
 
 #### Having analyzed this GFF file, does it seem like a complete and well-annotated organism?
 I think so. It contains all the expected chromosomes. Higher numbers of mRNA compared to genes because of alternative splicing. the number of genes make sense and it is close to 20-22k in our genus. So, it looks fine in my perspective, but I am not sure cause I am not an expert in this field.
