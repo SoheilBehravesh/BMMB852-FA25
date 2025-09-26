@@ -33,6 +33,3 @@ mv Acinetobacter_baumannii_aye_gca_000069245.ASM6924v1.62.gff3 abaum.gff
 ```
 
 ![alt text](IGVViewScSh.png)
-
-On the position 617150 there is a gene coded on the reverse strand that does not have a starting codon on the reading frames. it has a stop codon on the orf3, but the start codon does not placed on the start of the gene, after the biological region ended, the M will be the 14th aa
-why when we open a file the igv creat an index .fai. file?
