@@ -39,7 +39,7 @@ datasets summary genome accession GCF_000882815.3 | jq
 #The release date for this genome number is 2009
 ```
 ### Now use IGV to visualize the genome and the annotations relative to the genome.
-##### As a bioinformatician you should develop an ability to evaluate what you see.
+### As a bioinformatician you should develop an ability to evaluate what you see.
 
 ### How big is the genome, and how many features of each type does the GFF file contain? What is the longest gene? What is its name and function? You may need to search other resources to answer this question. Look at other gene names. Pick another gene and describe its name and function.
 ```bash
@@ -49,6 +49,7 @@ mv genomic.gff zikv_mr766.gff
 seqkit stats zikv_mr766.fa
 ```
 *how big is the genome?*
+
 there is just one sequence with the length of 10794
 
 *how many features of each type does the GFF file contain?*
@@ -62,6 +63,7 @@ cat zikv_mr766.gff | grep -v '#' > zikv_mr766.gff # to remove the lines starts w
 cat zikv_mr766.gff | cut -f 3 | sort | uniq -c | sort -r -n | head
 ```
 there are 6 different fewatures existed in the gff file.
+
 14  mature_protein_region_of_CDS
 1   three_prime_UTR
 1   region
@@ -75,7 +77,8 @@ grep -P '\tgene\t' zikv_mr766.gff > zikv_mr766_gene.gff
 cat zikv_mr766_gene.gff | more
 ```
 ther is just one gene in the annotated file. the POLY gene starts from the nucleotide number 107 to 10366. this is a protein coding gene and encode genome polyprotein. This gene has 3419 aa. the protein encoded by this gene has different sections that each has its own function. for example, capsid protein C that its location is from 12 to 102, plays a role in virus budding and binding to the host cell membrane and also inhibit RNA silecing by interfering with host Dicer. Or envelope protein E binds to host cell receptors and mediates fusion between viral and cellular membrane.
-Following are the names of the protein that encoded by this POLY gene:
+
+Following is the names of the protein that encoded by this POLY gene:
 capsid protein C
 membrane glycoprotein precursor prM
 envelope protein E
