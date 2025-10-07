@@ -52,4 +52,4 @@ fastqc -o ${REPORTS} ${T1} ${T2}
 
 # Run the multiqc from the menv environment on the reports directory
 # The output of the tool is in the multiqc_report.html
-micromamba run -n menv multiqc -o ${REPORTS} ${REPORTS}
+# micromamba run -n menv multiqc -o ${REPORTS} ${REPORTS}

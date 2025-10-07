@@ -29,9 +29,17 @@ Now, run the following code to extract the SRR nunmbers
 ```bash
 bio search SRP070895 | jq -r '.[].run_accession' > sra_ids.txt
 cat sra_ids.txt
+
+# we can also do it this way:
+# Obtain run metadata based on SRR number
+# The metadata includes the URL to the reads!
+# bio search SRP070895
+# Obtain run metadata based on PRJN number
+# bio search PRJNA313294 # Produces JSON output
+# bio search PRJNA313294 -H --csv # Produces CSV output
 ```
 
-different ways to getting the SRA data
+different ways to getting the SRA data:
 ```bash
 # 1) Download 1000 read pairs with fastq-dump into the reads directory that specified by the SRR number
 #fastq-dump -X 1000 -F --outdir reads --split-files SRR5790106
@@ -81,92 +89,30 @@ seqkit stats reads/SRR3194431_1.fastq
 ```
 number of reads=1000, total bases=75467, average read length=75.5
 #### Run FASTQC on the downloaded data to generate a quality report.
-
+```bash
+bash fastqc.sh
+```
 #### Evaluate the FASTQC report and summarize your findings.
-
+The quality score is good, the per base sequence quality is high, the per sequence quality scores is also good, the per base sequence content is not good as the A and T are higher than G and C and earcly cycles sho the proportion far from 25% but the internet says that's a known artifact in RNA-seq data because of existing random-hexame priming and 5' bias. the per sequence GC content is not good as it is not a normal distribution but this might resulted because the human transcriptomes are not uniform, the sequence length distribution is not good, the duplication levels is passed, the overrepresented sequences is not good as it shows some overrepresented sequences, the adapter content is good as it shows no adapter content. Overall, it looks like the quality of the reads is good but not the best.
 ### Compare sequencing platforms:
 #### Search the SRA for another dataset for the same genome, but generated using a different sequencing platform (e.g., if original data was Illumina select PacBio or Oxford Nanopore).
+https://www.ncbi.nlm.nih.gov/sra/?term=PRJNA798536
+SRX13837383: WGS of Zika virus
+1 OXFORD_NANOPORE (MinION) run: 3.6M spots, 1.7G bases, 1.5Gb downloads
+Design: Zika virus-specific primers were designed and used for library preparation.
+Submitted by: Seoul National University College of Medicine
+Study: Zika virus Raw sequence reads
+PRJNA798536 • SRP355884 • All experiments • All runs
+show Abstract
+Sample: Viral sample from Zika virus
+SAMN25079586 • SRS11715301 • All experiments • All runs
+Organism: Zika virus
 #### Briefly compare the quality or characteristics of the datasets from the two platforms.
-
-
-
+It is also single ended sequence
 ```bash
-micromamba activate bioinfo
-set -uex -o pipefail
+mkdir -p nanopore
+cd nanopore
+# copy fastqc.sh into nanopore directory and change the SRR to SRR17673905
+bash fastqc.sh
 ```
-
-
-```bash
-
-
-# Obtain run metadata based on SRR number
-# The metadata includes the URL to the reads!
-# bio search SRR5790106
-# Obtain run metadata based on PRJN number
-# bio search PRJNA392446 # Produces JSON output
-# bio search PRJNA392446 -H --csv # Produces CSV output
-
-# Generate statistics on the reads
-# seqkit stats reads/myreads.fq
-
-# Generate a FastQC report.
-fastqc reads/SRR1553607*.fastq
-
-# Other recommended tools for generating qulaity control on FASTQ files are: fastp / cutadapt / trimmomatic 
-```
-
-
-
-```bash
-# Set the trace to show the commands as executed
-set -uex
-
-# The URL of the gff3 file
-URL="ftp://ftp.ensembl.org/pub/current_gff3/ursus_maritimus/Ursus_maritimus.UrsMar_1.0.112.gff3.gz"
-
-# The name of the gff3 file
-GFF="polar_bear.gff"
-
-# The name of the genes file
-GENES="genes.gff"
-
-# ------ NO CHANGES NECESSARY BELOW THIS LINE ------
-
-# Download the gff3 file if it doesn't exist
-if [ ! -f ${GFF} ]; then
-    wget ${URL} -O ${GFF}.gz
-fi
-
-# Unzip the file and keep the original
-gunzip -k ${GFF}.gz
-
-# Make a new GFF file with only the features of type gene
-cat ${GFF} | awk '$3 == "gene"' >${GENES}
-
-# Print the number of genes
-cat ${GENES} | wc -l
-```
-
-
-
-
-Add the following to the start of every script you write:
-```bash
-# Set the error handling and trace
-set -uex
-
-# Define all variables at the top.
-
-# The URL of the file
-URL="https://example.com/somedata.txt"
-
-# The name of the file
-FILE="mydata.txt"
-
-# - ALL DEFINTIONS ARE ABOVE - ALL ACTIONS ARE BELOW -
-
-# List all the actions here.
-
-# Download data into file
-curl ${URL} > ${FILE}
-```
+the new reported QC for the seuence from nanopore is not good as illumina. It has more warnings and fails. For example, per-base quality was passed with illumina with high Q across cycles, but with nanopore it failed with variable ! across length. Or here we get warning for per-sequence quality scores, while it was passed with illumina. for the per-sequence GC content, here it fails but with illumina we received warning. overall, the seuqnce by illumina has clean short reads while here it was heterogenous with low quality.
