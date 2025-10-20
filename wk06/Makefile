@@ -2,22 +2,22 @@
 # This is a Makefile
 #
 # NCBI Genome accession number  
-ACC=AF086833
+ACC=AY632535.2
 
 # The user-friendly name for the genome
-NAME=ebola-1976
-
-# Reference genome
-REF=refs/${NAME}.fa
+NAME=zika_mr766
 
 # Bioproject number
 BPN=PRJNA313294 
 
 # SRR number
-SRR=SRP070895
+SRR=SRR3194431
 
 # URL to download the reads
-URL=https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR579/006/SRR5790106/SRR5790106.fastq.gz
+URL=https://trace.ncbi.nlm.nih.gov/Traces?run=SRR3194431
+
+# Reference genome
+REF=refs/${NAME}.fa
 
 # Read 1
 R1=reads/${SRR}_1.fastq
@@ -55,31 +55,48 @@ MAKEFLAGS += --no-builtin-rules
 
 # Prints the usage message
 usage:
-    @echo "#"
-    @echo "# Usage: make [all|refs|fastq|index|align|clean]"    
-    @echo "#"
+	@echo "#"
+	@echo "# Makefile for downloading the genome and reads for sequencing data
+	and aligning the reads to the genome to generate a BAM file. And evaluate
+	the alignment statistics."
+	@echo "# Usage: make [all|refs|fastq|index|align|clean]"
+	@echo "#"
 
-Download the genome:
-	refs/${NAME}.fa:
-	# Get the genome 
+ref:
+	# Make the refs directory
+	mkdir -p $(dir ${REF})
+	# Get the genome
 	efetch -db nuccore -format fasta -id ${ACC} > ${REF}
 
 	# Get the annotation
 	efetch -db nuccore -format gff -id ${ACC} > ${ACC}.gff
 	efetch -db nuccore -format gtf -id ${ACC} > ${ACC}.gtf
 
-Download the reads:
-	-x 5: use 5 connections
-	-c: continue download
-	--summary-interval=10: print summary every 10 seconds
-	aria2c -x 5 -c --summary-interval=10 ${URL}
+	# Show some stats about the genome
+	seqkit stats ${REF}
 
-Download the reads with multiple SRR:
-	bio search ${SRR} | jq -r '.[].run_accession' > sra_ids.txt
-	cat sra_ids.txt
-	# make the output dir
-	mkdir -p reads
-	# loop over each SRR in sra_ids.txt and run your exact command
-	while read -r SRR; do
-		fastq-dump -X 1000 -F --outdir reads --split-files "${SRR}"
-	done < sra_ids.txt
+read:
+	# Make the reads directory
+	mkdir -p $(dir ${R1})
+	# Download the reads
+	fastq-dump -X ${N} --outdir reads --split-files ${SRR}
+
+align: 
+	# Make the refs directory
+	mkdir -p $(dir ${BAM})
+	minimap2 --MD -ax sr ${REF} ${R1} | \
+		samtools sort > ${BAM}
+
+# Generate alignment statistics
+stats:
+	samtools flagstat ${BAM} > ${SRR}_bam_flagstat.txt
+
+# Clean up generated files
+# clean:
+	# rm -rf ${REF} ${R1} ${R2} ${BAM} ${BAM}.bai
+
+# Create necessary directories
+all: ref read align stats clean
+
+# Create necessary directories
+.PHONY: all ref read align stats clean
