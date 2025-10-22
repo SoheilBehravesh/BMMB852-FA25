@@ -11,10 +11,10 @@ NAME=zika_mr766
 BPN=PRJNA313294 
 
 # SRR number
-SRR=SRR3194431
+SRR=SRR3191545
 
 # URL to download the reads
-URL=https://trace.ncbi.nlm.nih.gov/Traces?run=SRR3194431
+URL=https://trace.ncbi.nlm.nih.gov/Traces/?run=SRR3191545
 
 # Reference genome
 REF=refs/${NAME}.fa
@@ -29,7 +29,7 @@ R2=reads/${SRR}_2.fastq
 BAM=bam/${SRR}.bam
 
 # How many reads to download
-N=10000
+N=1440
 
 
 
@@ -61,7 +61,7 @@ usage:
 	the alignment statistics."
 	@echo "# Usage: make [all|refs|fastq|index|align|clean]"
 	@echo "#"
-
+# working with the reference
 ref:
 	# Make the refs directory
 	mkdir -p $(dir ${REF})
@@ -75,25 +75,31 @@ ref:
 	# Show some stats about the genome
 	seqkit stats ${REF}
 
+index:
+	# Index the reference genome for BWA
+	bwa index ${REF}
+# working wth the reads
 read:
 	# Make the reads directory
 	mkdir -p $(dir ${R1})
-	# Download the reads
+	# Download the reads for 10x coverage
 	fastq-dump -X ${N} --outdir reads --split-files ${SRR}
 
-align: 
-	# Make the refs directory
+# Align the reads and convert to BAM. Use 4 threads
+# Works for paired-end reads. Modify for single-end reads.
+align:
+    # Make the BAM directory
 	mkdir -p $(dir ${BAM})
-	minimap2 --MD -ax sr ${REF} ${R1} | \
-		samtools sort > ${BAM}
+	
+    # Align the reads and index the BAM file
+	minimap2 --MD -ax sr ${REF} ${R1} | samtools sort > ${BAM}
+	samtools index ${BAM}
 
-# Generate alignment statistics
+# Generate alignment statistics of the alignment file
 stats:
+	samtools flagstat ${BAM}
 	samtools flagstat ${BAM} > ${SRR}_bam_flagstat.txt
-
-# Clean up generated files
-# clean:
-	# rm -rf ${REF} ${R1} ${R2} ${BAM} ${BAM}.bai
+	samtools coverage ${BAM}
 
 # Create necessary directories
 all: ref read align stats clean
