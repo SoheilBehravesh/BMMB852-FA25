@@ -62,8 +62,9 @@ usage:
 	@echo "#"
 	@echo "# Makefile for downloading the genome and reads for sequencing data
 	and aligning the reads to the genome to generate a BAM file. And evaluate
-	the alignment statistics."
-	@echo "# Usage: make [all|refs|fastq|index|align|clean]"
+	the alignment statistics. Also, making Wiggle files from BAM for 
+	understanding the coverage"
+	@echo "# Usage: make [all|refs|fastq|index|align|wiggle|clean]"
 	@echo "#"
 # working with the reference
 ref:
@@ -113,7 +114,7 @@ stats:
 	samtools coverage ${BAM}
 
 # Create necessary directories
-all: ref read align stats clean
+all: ref read align wiggle stats clean
 
 # Create necessary directories
-.PHONY: all ref read align stats clean
+.PHONY: all ref read align wiggle stats clean
