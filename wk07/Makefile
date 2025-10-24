@@ -10,13 +10,11 @@ NAME=zika_mr766
 # Bioproject number
 BPN=PRJNA313294 
 
-# SRR number
+# SRR numbers
 SRR=SRR3191545
 
-SRR_alt=SRR17673905
-
 # URL to download the reads
-URL=https://trace.ncbi.nlm.nih.gov/Traces/?run=SRR3191545
+URL=https://trace.ncbi.nlm.nih.gov/Traces/?run=${SRR}
 
 # Reference genome
 REF=refs/${NAME}.fa
@@ -27,18 +25,17 @@ R1=reads/${SRR}_1.fastq
 # Read 2
 R2=reads/${SRR}_2.fastq
 
-# Alternative read sequence
-R_alt=reads/${SRR_alt}_alt.fastq
-
-# BAM file
+# BAM files
 BAM=bam/${SRR}.bam
 
-BAM_alt=bam/${SRR_alt}_alt.bam
+# The temporary bedgraph files
+BG=bam/${SRR}.bedgraph
+
+# The BW wiggle files
+BW=bam/${SRR}.bw
 
 # How many reads to download
 N=10000
-
-
 
 # Set the shell the commands run in.
 SHELL = bash
@@ -87,7 +84,7 @@ read:
 	# Make the reads directory
 	mkdir -p $(dir ${R1})
 	# Download the reads
-	fastq-dump -X ${N} --outdir reads --split-files ${SRR} ${SRR_alt}
+	fastq-dump -X ${N} --outdir reads --split-files ${SRR} 
 
 # Align the reads and convert to BAM. Use 4 threads
 # Works for paired-end reads. Modify for single-end reads.
@@ -99,13 +96,21 @@ align:
 	minimap2 --MD -ax sr ${REF} ${R1} | samtools sort > ${BAM}
 	samtools index ${BAM}
 
-	minimap2 --MD -ax sr ${REF} ${R_alt} | samtools sort > ${BAM_alt}
-	samtools index ${BAM_alt}
+# Creating Wiggle files from BAM
+wiggle:
+    # Index the reference genome
+	samtools faidx ${REF}
+
+    # Generate the temporary bedgraph file
+	LC_ALL=C; bedtools genomecov -ibam  ${BAM} -split -bg | sort -k1,1 -k2,2n > ${BG}
+
+    # Convert the bedgraph file to bigwig
+	bedGraphToBigWig ${BG} ${REF}.fai ${BW}
 
 # Generate alignment statistics of the alignment file
 stats:
-	samtools flagstat ${BAM} ${BAM_alt}
-	samtools coverage ${BAM} ${BAM_alt}
+	samtools flagstat ${BAM}
+	samtools coverage ${BAM}
 
 # Create necessary directories
 all: ref read align stats clean
