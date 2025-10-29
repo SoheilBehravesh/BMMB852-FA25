@@ -39,11 +39,40 @@ samtools depth SRR17673905.bam | sort -k3 -nr | head
 for SRR3191545, AY632535.2:8106 with depth 2
 for SRR17673905, AY632535.2:7127 and AY632535.2:7123 with depth 1626
 #### Select a gene of interest. How many alignments on the forward strand cover the gene?
-I should keep a better looking into why the annotation file does not work. but based on finding a region of a gene of interest, I can extract the alignment of the gene based on its region on the genome, and then generate a bam file of that gene, and visualize it. I will look more to it tomorrow mornminng.
-```bash
-# Extract alignments from a region
-samtools view -b input.bam chr1:1000-2000 > region.bam
+I was interested to look for the capsid protein but based on the research, I just realized that there is just one gene known as POLY in Zika vitus and the RNA from that is translated as a single polypeptide chain including all the viral proteins: C-prM-E-NS1-NS2A-NS2B-NS3-NS4A-NS4B-NS5.
 
-# Index the extracted BAM file
-samtools index region.bam
+However, we use the following code to check for the genes in the annotated file.
+```bash
+cd ref
+cat zika_mr766.gff | cut -f 3 | sort | uniq -c | sort -r -n 
 ```
+since I did not remove everything that starts with a comment, the output shows all the information, but what is interested for us is that part:
+      14 mature_protein_region_of_CDS
+      1 three_prime_UTR
+      1 region
+      1 gene
+      1 five_prime_UTR
+      1 CDS
+
+```bash
+cat zika.gff3 | grep -w "gene"
+```
+the output also shows there is just one gene. and this gene covers the region of 107 to 10366. 
+
+```bash
+ca bam
+# Extract alignments from a region (NC_012532.1 is the file of the rerefence genome extracted from IGV)
+samtools view -b SRR3191545.bam zika_mr766:107-10366 > SRR3191545_region.bam
+# Index the extracted BAM file
+samtools index SRR3191545_region.bam
+
+# For the nanopore red:
+samtools view -b SRR17673905.bam NC_012532.1:107-10366 > SRR17673905_region.bam
+samtools index SRR17673905_region.bam
+```
+ok, to count the number of alignments on the forwards strand we have to exclude unmapped (4) on the reverse strand (16), therefore we set the number for exclusion to 30. in order to count the reads on the forwards strans for that specific location. We can also set the quality for the map, but here is not necessary.
+```bash
+samtools view -c -F 20 SRR3191545_region.bam
+samtools view -c -F 20 SRR17673905_region.bam
+```
+For the illumina the number of alignment is 12 and for the nanopore is 3648.
