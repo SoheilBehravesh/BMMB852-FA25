@@ -114,6 +114,10 @@ stats:
 	samtools flagstat ${BAM}
 	samtools coverage ${BAM}
 
+# Clean up generated files
+clean:
+	rm -rf ${REF} ${R1} ${R2} ${BAM} ${BAM}.bai
+
 # Create necessary directories
 all: ref read align wiggle stats clean
 

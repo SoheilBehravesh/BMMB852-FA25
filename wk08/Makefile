@@ -45,6 +45,9 @@ BW=bam/${SRR}.bw
 # How many reads to download
 N=10000
 
+# We can set it to 1 if we wanted to check what the code execute
+DRYRUN=0
+
 # Set the shell the commands run in.
 SHELL = bash
 
@@ -84,7 +87,9 @@ ref:
 	mv ref/ncbi_dataset/data/${GEN}*/*.gtf ref/${NAME}.gtf
 
 	# Show some stats about the genome
-	seqkit stats ${REF}
+	# Make the stat directory if it already not exists
+	mkdir -p stats
+	seqkit stats ${REF} > stats/${NAME}_fasta_stats.txt
 
 # working wth the reads
 read:
@@ -116,16 +121,17 @@ wiggle:
 
 # Generate alignment statistics of the alignment file
 stats:
-    # Make the stat directory if it already not exists
-	mkdir -p stats
 	samtools flagstat ${BAM} > stats/${SRR}_bam_flagstat.txt
 	samtools coverage ${BAM} > stats/${SRR}_bam_coverage.txt
 
+# Clean up generated files
+clean:
+	rm -rf ${REF} ${R1} ${R2} ${BAM} ${BAM}.bai
+	
 # Create necessary directories
 all: ref read align wiggle stats clean
+ref: ref
+reads: read aling wiggle stat
+
 # Create necessary directories
 .PHONY: all ref read align wiggle stats clean
-
-# one SRR workflow (no reference)
-.PHONY: per_srr
-per_srr: read align wiggle stats
