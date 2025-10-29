@@ -119,7 +119,7 @@ clean:
 	rm -rf ${REF} ${R1} ${R2} ${BAM} ${BAM}.bai
 
 # Create necessary directories
-all: ref read align wiggle stats clean
+all: ref read align wiggle stats
 
 # Create necessary directories
 .PHONY: all ref read align wiggle stats clean

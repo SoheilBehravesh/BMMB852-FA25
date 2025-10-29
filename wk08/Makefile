@@ -127,11 +127,11 @@ stats:
 # Clean up generated files
 clean:
 	rm -rf ${REF} ${R1} ${R2} ${BAM} ${BAM}.bai
-	
+
 # Create necessary directories
-all: ref read align wiggle stats clean
+all: ref read align wiggle stats
 ref: ref
-reads: read aling wiggle stat
+reads: read aling wiggle stat 
 
 # Create necessary directories
 .PHONY: all ref read align wiggle stats clean
