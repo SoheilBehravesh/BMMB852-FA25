@@ -70,7 +70,7 @@ samtools index SRR3191545_region.bam
 samtools view -b SRR17673905.bam NC_012532.1:107-10366 > SRR17673905_region.bam
 samtools index SRR17673905_region.bam
 ```
-ok, to count the number of alignments on the forwards strand we have to exclude unmapped (4) on the reverse strand (16), therefore we set the number for exclusion to 30. in order to count the reads on the forwards strans for that specific location. We can also set the quality for the map, but here is not necessary.
+ok, to count the number of alignments on the forwards strand we have to exclude unmapped (4) on the reverse strand (16), therefore we set the number for exclusion to 20. in order to count the reads on the forwards strans for that specific location. We can also set the quality for the map, but here is not necessary.
 ```bash
 samtools view -c -F 20 SRR3191545_region.bam
 samtools view -c -F 20 SRR17673905_region.bam
