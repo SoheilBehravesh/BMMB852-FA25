@@ -17,28 +17,28 @@ make all SRR=SRR17673905
 ```
 
 ### Visualize the GFF annotations and both wiggle and BAM files in IGV.
-I don't know why the annotation file does not show anything. there is data in the gff file, I opened it and read it, but when I drop it on IGV it does not show anything. what could be the reason? Previously I have used the Marmoset fasta and gff file, and it showed but for the zika virus it does not display anything. MAybe it does not have a good annotation.
 
 ![alt text](Untitled-1.png)
 
 ### Answer the following questions:
 #### Briefly describe the differences between the alignment in both files.
+
 #### Briefly compare the statistics for the two BAM files.
 based on the -flagstat and -coverage in samtools:
 SRR3191545 (short-read, Illumina): Almost nothing maps. only 25 aligned the Zika genome. Coverage of the genome is 15.8% of bases, 0.17× mean depth. Base qualities are high (mean Q 36.6), mapping qualities high (53.1), but there just aren’t many viral reads in this library.
 
-SRR17673905, the alternative one (long-read, Nanopore): Most of the subset maps: 6,601/10,043 reads aligned. Coverage is 49.8% of the genome with a 200× mean depth. it has lower mean base Q (21.8), some split alignments (43 supplementary), lower mean MAPQ (44.8) than Illumina.
+SRR17673905 (long-read, Nanopore): Most of the subset maps: 6,601/10,043 reads aligned. Coverage is 49.8% of the genome with a 200× mean depth. it has lower mean base Q (21.8), some split alignments (43 supplementary), lower mean MAPQ (44.8) than Illumina.
 
 #### How many primary alignments does each of your BAM files contain?
 with setting up N=10000, the number of reads is 25, which means the (primary) mapped for the original SRR is 25 (0.25%). But for the second read with the Nanopore (although we remember from the week 5 that the quality of the reads was not good compare to the original read) the number of primary read of 6558 (65.58%).
 #### What coordinate has the largest observed coverage? (hint: samtools depth)
 ```bash
-cd ~BMMB852-FA25/wk07/bam
+cd bam
 samtools depth SRR3191545.bam | sort -k3 -nr | head
 samtools depth SRR17673905.bam | sort -k3 -nr | head
 ```
 for SRR3191545, AY632535.2:8106 with depth 2
-for SRR17673905, AY632535.2:7127 and AY632535.2:7123 with depth 1636
+for SRR17673905, AY632535.2:7127 and AY632535.2:7123 with depth 1626
 #### Select a gene of interest. How many alignments on the forward strand cover the gene?
 I should keep a better looking into why the annotation file does not work. but based on finding a region of a gene of interest, I can extract the alignment of the gene based on its region on the genome, and then generate a bam file of that gene, and visualize it. I will look more to it tomorrow mornminng.
 ```bash
