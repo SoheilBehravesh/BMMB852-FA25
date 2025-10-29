@@ -22,7 +22,6 @@ make all SRR=SRR17673905
 
 ### Answer the following questions:
 #### Briefly describe the differences between the alignment in both files.
-
 #### Briefly compare the statistics for the two BAM files.
 based on the -flagstat and -coverage in samtools:
 SRR3191545 (short-read, Illumina): Almost nothing maps. only 25 aligned the Zika genome. Coverage of the genome is 15.8% of bases, 0.17× mean depth. Base qualities are high (mean Q 36.6), mapping qualities high (53.1), but there just aren’t many viral reads in this library.
