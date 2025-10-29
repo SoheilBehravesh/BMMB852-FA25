@@ -69,6 +69,8 @@ usage:
 	@echo "#"
 # working with the reference
 ref:
+	# Make the reference directory if it already not exists
+	mkdir -p $(dir ${REF})
 	datasets download genome accession ${GEN} --include genome,gff3,gtf --filename ${GEN}.zip
 	unzip -n -o  ${GEN}.zip -d ref
 	rm  ${GEN}.zip
@@ -81,7 +83,7 @@ ref:
 
 # working wth the reads
 read:
-	# Make the reads directory
+	# Make the reads directory if it already not exists
 	mkdir -p $(dir ${R1})
 	# Download the reads
 	fastq-dump -X ${N} --outdir reads --split-files ${SRR} 
@@ -89,8 +91,8 @@ read:
 # Align the reads and convert to BAM. Use 4 threads
 # Works for paired-end reads. Modify for single-end reads.
 align:
-    # Make the BAM directory
-	mkdir -p $(dir ${BAM})
+    # Make the BAM directory if it already not exists
+	mkdir -p $(dir ${BAM}) 
 	
     # Align the reads and index the BAM file
 	minimap2 --MD -ax sr ${REF} ${R1} | samtools sort > ${BAM}
@@ -109,9 +111,10 @@ wiggle:
 
 # Generate alignment statistics of the alignment file
 stats:
-	mkdir -p stats
-	samtools flagstat ${BAM} > ${SRR}_bam_flagstat.txt
-	samtools coverage ${BAM} > ${SRR}_bam_coverage.txt
+    # Make the stat directory if it already not exists
+	mkdir -p stat
+	samtools flagstat ${BAM} > stats/${SRR}_bam_flagstat.txt
+	samtools coverage ${BAM} > stats/${SRR}_bam_coverage.txt
 
 # Create necessary directories
 all: ref read align wiggle stats clean
