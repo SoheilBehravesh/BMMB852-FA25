@@ -69,6 +69,8 @@ usage:
 	@echo "#"
 # working with the reference
 ref:
+	# Make the reference directory
+	mkdir -p $(dir ${REF})
 	datasets download genome accession ${GEN} --include genome,gff3,gtf --filename ${GEN}.zip
 	unzip -n -o  ${GEN}.zip -d ref
 	rm  ${GEN}.zip
