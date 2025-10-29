@@ -4,6 +4,9 @@
 # NCBI Genome accession number  
 ACC=AY632535.2
 
+# NCBI Genome number
+GEN=GCF_000882815
+
 # The user-friendly name for the genome
 NAME=zika_mr766
 
@@ -17,7 +20,7 @@ SRR=SRR3191545
 URL=https://trace.ncbi.nlm.nih.gov/Traces/?run=${SRR}
 
 # Reference genome
-REF=refs/${NAME}.fa
+REF=ref/${NAME}.fa
 
 # Read 1
 R1=reads/${SRR}_1.fastq
@@ -55,8 +58,6 @@ MAKEFLAGS += --warn-undefined-variables
 # Disable built-in rules.
 MAKEFLAGS += --no-builtin-rules
 
-
-
 # Prints the usage message
 usage:
 	@echo "#"
@@ -64,18 +65,16 @@ usage:
 	and aligning the reads to the genome to generate a BAM file. And evaluate
 	the alignment statistics. Also, making Wiggle files from BAM for 
 	understanding the coverage"
-	@echo "# Usage: make [all|refs|fastq|index|align|wiggle|clean]"
+	@echo "# Usage: make [all|ref|fastq|index|align|wiggle|clean]"
 	@echo "#"
 # working with the reference
 ref:
-	# Make the refs directory
-	mkdir -p $(dir ${REF})
-	# Get the genome
-	efetch -db nuccore -format fasta -id ${ACC} > ${REF}
-
-	# Get the annotation
-	efetch -db nuccore -format gff -id ${ACC} > ${ACC}.gff
-	efetch -db nuccore -format gtf -id ${ACC} > ${ACC}.gtf
+	datasets download genome accession ${GEN} --include genome,gff3,gtf --filename ${GEN}.zip
+	unzip -n -o  ${GEN}.zip -d ref
+	rm  ${GEN}.zip
+	mv ref/ncbi_dataset/data/${GEN}*/*.fna ref/${NAME}.fa
+	mv ref/ncbi_dataset/data/${GEN}*/*.gff ref/${NAME}.gff
+	mv ref/ncbi_dataset/data/${GEN}*/*.gtf ref/${NAME}.gtf
 
 	# Show some stats about the genome
 	seqkit stats ${REF}
