@@ -1,6 +1,7 @@
 #
 # This is a Makefile
 #
+# Parameters set for the specific reference genome
 # NCBI Genome accession number  
 ACC=AY632535.2
 
@@ -10,6 +11,8 @@ GEN=GCF_000882815
 # The user-friendly name for the genome
 NAME=zika_mr766
 
+
+#Parameters set for the specific reads
 # Bioproject number
 BPN=PRJNA313294 
 
@@ -19,6 +22,8 @@ SRR=SRR3191545
 # URL to download the reads
 URL=https://trace.ncbi.nlm.nih.gov/Traces/?run=${SRR}
 
+
+# Other parameters
 # Reference genome
 REF=ref/${NAME}.fa
 
@@ -112,12 +117,15 @@ wiggle:
 # Generate alignment statistics of the alignment file
 stats:
     # Make the stat directory if it already not exists
-	mkdir -p stat
+	mkdir -p stats
 	samtools flagstat ${BAM} > stats/${SRR}_bam_flagstat.txt
 	samtools coverage ${BAM} > stats/${SRR}_bam_coverage.txt
 
 # Create necessary directories
 all: ref read align wiggle stats clean
-
 # Create necessary directories
 .PHONY: all ref read align wiggle stats clean
+
+# one SRR workflow (no reference)
+.PHONY: per_srr
+per_srr: read align wiggle stats
