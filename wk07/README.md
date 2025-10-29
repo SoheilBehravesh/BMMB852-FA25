@@ -19,7 +19,7 @@ make all SRR=SRR17673905
 ### Visualize the GFF annotations and both wiggle and BAM files in IGV.
 I don't know why the annotation file does not show anything. there is data in the gff file, I opened it and read it, but when I drop it on IGV it does not show anything. what could be the reason? Previously I have used the Marmoset fasta and gff file, and it showed but for the zika virus it does not display anything. MAybe it does not have a good annotation.
 
-![alt text](Untitled.png)
+![alt text](Untitled-1.png)
 
 ### Answer the following questions:
 #### Briefly describe the differences between the alignment in both files.
