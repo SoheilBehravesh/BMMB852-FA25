@@ -34,4 +34,5 @@ we will use the follwing code to run the steps 2 to 5 for the samples in one go 
 cat design.csv | parallel --colsep , --header : --eta -j 4 'make reads SRR={run_accession}'
 ```
 The code also set the column seperato as comma and tells the parallel that the first line in csv dile is a header. the jobs (-j) set up to 4 to run 2 job simultaneously. --eta is for showing the estimated time of completion.
+
 #### Create a README.md file that explains how to run the Makefile
