@@ -121,6 +121,7 @@ wiggle:
 
 # Generate alignment statistics of the alignment file
 stats:
+	mkdir -p stats	
 	samtools flagstat ${BAM} > stats/${SRR}_bam_flagstat.txt
 	samtools coverage ${BAM} > stats/${SRR}_bam_coverage.txt
 
@@ -131,7 +132,7 @@ clean:
 # Create necessary directories
 all: ref read align wiggle stats
 ref: ref
-reads: read aling wiggle stat 
+reads: read align wiggle stats
 
 # Create necessary directories
 .PHONY: all ref read align wiggle stats clean
