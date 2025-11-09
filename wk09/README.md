@@ -58,7 +58,7 @@ The following command will merge all of the vcf.gz files into a single file as m
 bcftools merge vcf/*.vcf.gz -Oz -o vcf/merged.vcf.gz
 ```
 #### Visualize the multisample VCF in the context of the GFF annotation file.
-![alt text](merged.png)
+![alt text](allmerged.png)
 
 #### If any samples show poor alignment or no variants, identify and replace them with better samples. Ensure you have sufficient genome coverage across all samples
 Now, let's remove all the downloaded and generated files
