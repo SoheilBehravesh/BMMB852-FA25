@@ -6,14 +6,50 @@ The aim of this week assignment is to downlaod the reference genome for a specif
 
 The Genome In A Botttle (GIAB) is a project to create benchmarked human reference genomes so different labs can validate, compare, and standardize theor sequenicing and variant-calling pipelines against a trusted source. Cancer GIAB has the same goal but with tumor-normal pairs. For whole Genome sequencing, the project used technologies that situated in 4 different approaches: short-read, long-read, single cell, and chromatin configuration capture. In this assignment we want tu compare the technologies for short-reead (Illumina Novaseq, Element Aviti, Pacbio Onso, Ultima standard, Ultima ppmSeq) and long-read sequencing (ONT-standard, ONT-UL E8.2, ONT-UL E8.2.1, PacBop Revio, Pacbio Vega).
 
-So, the approach we took for this evaluation is first to make a design.csv file that contains the web address for downloading the reference from each sequencing technology. So, in the design file you will fin the name of the technologies in the first column and the RUL for the BED files of each of the technologies. Then using parallel for the design file to go over our Make file, which contains the code for downloading the reference genomes and the reads from the project. At the end we can extract the quality information of each read to our reference genome to evaluate which technology produce better reads.
+So, the approach we took for this evaluation is first to make a design.csv file that contains the web address for downloading the reference from each sequencing technology. So, in the design file you will fin the name of the technologies in the first column and the RUL for the BED files of each of the technologies. Then using parallel for the design file to go over our Makefile, which contains the code for downloading the BAM files from the project for comparison. At the end we can extract the quality information of each read to our reference genome to evaluate which technology produce better reads.
 
 The region of our interest is containing the *CDKN2A* gene which located on chromose 9 short arm 9p21.3 (chr9:21,967,752-21,995,324 for latest assembly in GRCh38/hg38). This gene contains 27,573 bases and encodes the Cyclin Dependent Kinase Inhibitor 2A. this gene produce three transcript variants that differ in their first exons. Two of its splice variants either inhibit CDK4 to block the cell cycle G1 progeression or the other splice variant produce an alternate open reading frame which stabilizes p53 (a famous tumor supressor protein) by restraining MDM2, which is responsible for degradation of p53. The deleted or mutated forms of this gene found in many tumors, especially in pancreatic cancers (Melanoma-Pancreatic Cancer Syndrome) 
 
 One point to consider is that we did not download the reference genome for this week assignment, instead we used the buil-in genome in IGV. So, on the top left of OGV window, you will select **Genomes** > **Download Hosted Genome** and then from the menu select hg38. once it opened, select chromosome 9, where our gene of interest located.
 
-some tips:
+some notes:
 a) Some technologies just used in normal tissues while some just in tumor tissue.
 b) both of the ultima machines (standard and ppmseq) are not included in the analysis because generate generat cram file instead of bam file.
 c) short reads compare the sequences of normal duodenal (N-D) tissues, while long reads compare the tumor (T) samples.
 d)pacbio vega for the long read sequences is not included in the analysis, because I could not find which of the pacbio bam files is for the Vega machine, there was not such info in the readme files of the two pacbio reads.
+
+Now, let's run the makefile:
+```bash
+# downoading the referencce
+make ref
+# Parallel running for downloading bam files, generating bigwig files, and acquiring stats for each sequences of the machine
+cat design.csv | parallel --colsep , --header : --eta --lb -j 4 make bam TECH={tech} BAM_URL={address}
+```
+characterstics we covered:
+1. reads mapped / sequences and reads unmapped: Overall mappability. Higher is better. Compare as a percentage.
+
+2. error rate (mismatches / bases mapped [cigar]): Lower is better. This is your cross-platform headline.
+
+3. average quality: Sanity check that Phred scores align with error rate. Should roughly track.
+
+4. reads MQ0 (count and fraction of mapped reads): Lower is better. High MQ0 screams ambiguous mappings.
+
+5. supplementary alignments: Too many can indicate chimeras/adapter mess or ultra-fragmented mapping.
+
+6. reads duplicated / bases duplicated: Library/optical duplicates; lower is better. If 0, dedup may not have been run.
+
+7. average length: Confirms read length specs match the platform.
+
+| tech | Mapped | tot seq | Map/seq(%) | err rate | avg qual | MQ0 | supp align | rd/bs dup | avg lng | max lng |
+|-----:|-------:|--------:|-----------:|---------:|---------:|----:|-----------:|----------:|--------:|--------:|
+| illumina_novaseq | 1609752 | 1613000 | 99.79 | 2.956908e-02   | 35.2 | 262177 | 362417 | 0 | 151 | 151 |
+| element_aviti | 880215 | 882057 | 99.79 | 3.495223e-02 | 48.8 | 149035 | 231910 | 0 | 147 | 150 |
+| pacbio_onso | 653779 | 666532 | 98 | 3.776167e-02 | 50.1 | 132636 | 202824 | 0  | 144 | 150 |
+| ont_std | 1866 | 1866 | 1 | 1.023628e-01 | 31.2 | 50 | 645 | 0 | 19826 | 1441659 |
+| ont_ul8.2 | 719 | 719 | 1 | 1.307449e-01 | 28.2 | 4 | 1264 | 0 | 61300 | 837897 |
+| ont_ul8.2.1 | 1662 | 1662 | 1 | 1.972217e-01 | 17.1 | 6 | 4578 | 0 | 60107 | 1783746 |
+| pacbio_revio | 3330 | 3330 | 1 | 5.665717e-02 | 38.4 | 0 | 1249 | 0 | 17989 | 42081 |
+
+Among short-read platforms, NovaSeq is the leader, with the highest mapping, lowest mismatch rate, and consistently strong read length and quality. For long reads, PacBio Revio is the best, with lower error than ONT, no MQ0 issues, and long reads with manageable supplementary alignments. Comparing between two methods, short reads—particularly NovaSeq—win for base-accurate SNVs and clean mapping, whereas long reads excel for long-range context, structural variants, and assembly; within the latter, Revio is the only option here that balances length with acceptable accuracy.
+
+

@@ -18,11 +18,17 @@ MAKEFLAGS += --no-builtin-rules
 
 
 # -------------- Setting up the Parameters --------------
+# Ref URL
+REF_URL=https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/references/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fasta.gz
+
+# Ref file name
+REF=ref/GRCh38.fasta.gz
+
 # Define chromosome of interest
 CHR=chr9
 
 # Set the region of interest. Million bp around TP53 (~7.6mil)
-REGION=chr17:21,500,000-22,500,000
+REGION=chr9:21,500,000-22,500,000
 
 # Set the URL of the BAM file
 BAM_URL=
@@ -50,8 +56,7 @@ BW=wiggle/${TECH}.bw
 usage:
 	@echo "Usage:"
 	@echo " # make ref                # Download and index the reference genome"
-	@echo " # make bam TECH=<tech> BAM_URL=<bam_url>   # Download BAM file, extract region, index, generate bigwig and run samtools stats"
-
+	@echo " # make bam TECH=<tech> BAM_URL=<address>   # Download BAM file, extract region, index, run samtools stats, and generate bigwig "
 
 ref:
 	@echo "# Create the reference directory"
@@ -60,22 +65,23 @@ ref:
 	curl -L ${REF_URL} > ${REF}
 	@echo "# Index the reference genome for use with samtools."
 	samtools faidx ${REF}
+
 bam:
-	@echo "# Create the BAM directory"
+# Create the BAM directory
 	mkdir -p bam
-	@echo "# Create the stats directory"
+# Create the stats directory
 	mkdir -p stats
-	@echo "# Extract the reads for the region of interest."
+# Extract the reads for the region of interest
 	samtools view -b ${BAM_URL} ${REGION} > ${BAM}
-	@echo "# Index the BAM file."
+# Index the BAM file.
 	samtools index ${BAM}
-	@echo "# Get statistics on the BAM file."
+# statistics on the BAM file.
 	samtools stats ${BAM} > ${STATS}
-	@echo "# Create wiggle directory if it does not already exist"
+# Create wiggle directory if it does not already exist
 	mkdir -p wiggle	
-	@echo "# Generate the temporary bedgraph file."
+# Generate the temporary bedgraph file.
 	LC_ALL=C; bedtools genomecov -ibam  ${BAM} -split -bg | sort -k1,1 -k2,2n > ${BG}
-	@echo "# Convert the bedgraph file to bigwig."
+# Convert the bedgraph file to bigwig.
 	bedGraphToBigWig ${BG} ${FAI} ${BW}
 
 .PHONY: ref bam
