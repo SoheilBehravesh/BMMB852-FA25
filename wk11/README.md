@@ -50,4 +50,4 @@ characterstics we covered:
 
 Among short reads, all three perform strongly, but Aviti performs a little ahead on base accuracy with comparable mapping to NovaSeq, while Onso shows little lower mapping yet the best mismatch profile of these three; in practice, NovaSeq and Aviti are both excellent for variant calling. Among long reads, PacBio Revio delivers the best balance of accuracy and consistency, whereas ONT datasets prioritize extreme length with noticeably higher error rates despite clean mapping behavior; they’re ideal for spanning repeats and structural variants, not fine-grained SNP work. Comparing between these two methods, short reads are superior for base-level accuracy and clean SNP/indel calling, while long reads win for structural variation and assembly. Additionally, we have to keep in mind that these statistics is specifically for that region of our interest. Maybe for other parts these stats would be different, for example the structure such as the number of repeats would affect the reading quality and they would have a better performance for other regions of the genome.
 
-![alt text](IGV.png)
+![alt text](IGV1.png)
