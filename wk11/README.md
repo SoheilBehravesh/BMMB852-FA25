@@ -10,8 +10,6 @@ So, the approach we took for this evaluation is first to make a design.csv file 
 
 The region of our interest is containing the *CDKN2A* gene which located on chromose 9 short arm 9p21.3 (chr9:21,967,752-21,995,324 for latest assembly in GRCh38/hg38). This gene contains 27,573 bases and encodes the Cyclin Dependent Kinase Inhibitor 2A. this gene produce three transcript variants that differ in their first exons. Two of its splice variants either inhibit CDK4 to block the cell cycle G1 progeression or the other splice variant produce an alternate open reading frame which stabilizes p53 (a famous tumor supressor protein) by restraining MDM2, which is responsible for degradation of p53. The deleted or mutated forms of this gene found in many tumors, especially in pancreatic cancers (Melanoma-Pancreatic Cancer Syndrome) 
 
-One point to consider is that we did not download the reference genome for this week assignment, instead we used the buil-in genome in IGV. So, on the top left of OGV window, you will select **Genomes** > **Download Hosted Genome** and then from the menu select hg38. once it opened, select chromosome 9, where our gene of interest located.
-
 some notes:
 a) Some technologies just used in normal tissues while some just in tumor tissue.
 b) both of the ultima machines (standard and ppmseq) are not included in the analysis because generate generat cram file instead of bam file.
@@ -40,16 +38,16 @@ characterstics we covered:
 
 7. average length: Confirms read length specs match the platform.
 
-| tech | Mapped | tot seq | Map/seq(%) | err rate | avg qual | MQ0 | supp align | rd/bs dup | avg lng | max lng |
+| tech | Tot Seq | Mapped | Map/seq(%) | err rate | avg qual | MQ0 | supp align | rd/bs dup | avg lng | max lng |
 |-----:|-------:|--------:|-----------:|---------:|---------:|----:|-----------:|----------:|--------:|--------:|
-| illumina_novaseq | 1609752 | 1613000 | 99.79 | 2.956908e-02   | 35.2 | 262177 | 362417 | 0 | 151 | 151 |
-| element_aviti | 880215 | 882057 | 99.79 | 3.495223e-02 | 48.8 | 149035 | 231910 | 0 | 147 | 150 |
-| pacbio_onso | 653779 | 666532 | 98 | 3.776167e-02 | 50.1 | 132636 | 202824 | 0  | 144 | 150 |
-| ont_std | 1866 | 1866 | 1 | 1.023628e-01 | 31.2 | 50 | 645 | 0 | 19826 | 1441659 |
-| ont_ul8.2 | 719 | 719 | 1 | 1.307449e-01 | 28.2 | 4 | 1264 | 0 | 61300 | 837897 |
-| ont_ul8.2.1 | 1662 | 1662 | 1 | 1.972217e-01 | 17.1 | 6 | 4578 | 0 | 60107 | 1783746 |
-| pacbio_revio | 3330 | 3330 | 1 | 5.665717e-02 | 38.4 | 0 | 1249 | 0 | 17989 | 42081 |
+| illumina_novaseq | 1169975 | 1168397 | 99.8 | 3.498389e-03 | 35.8 | 4382 | 1027 | 0 | 151 | 151 |
+| element_aviti | 615368 | 614850 | 99.9 | 2.767952e-03 | 49.0 | 2866 | 680 | 0 | 148 | 150 |
+| pacbio_onso | 364290 | 358601 | 98.4 | 2.040964e-03 | 50.2 | 1774 | 2117 | 0  | 144 | 150 |
+| ont_std | 1503 | 1503 | 1 | 4.388355e-02 | 34.6 | 0 | 78 | 0 | 23266 | 114327 |
+| ont_ul8.2 | 603 | 603 | 1 | 5.486216e-02 | 33.1 | 0 | 21 | 0 | 59652 | 461209 |
+| ont_ul8.2.1 | 863 | 863 | 1 | 3.277349e-02 | 40.8 | 0 | 18 | 0 | 39942 | 306393 |
+| pacbio_revio | 3142 | 3142 | 1 | 5.243023e-03 | 38.1 | 0 | 42 | 0 | 18107 | 42875 |
 
-Among short-read platforms, NovaSeq is the leader, with the highest mapping, lowest mismatch rate, and consistently strong read length and quality. For long reads, PacBio Revio is the best, with lower error than ONT, no MQ0 issues, and long reads with manageable supplementary alignments. Comparing between two methods, short reads—particularly NovaSeq—win for base-accurate SNVs and clean mapping, whereas long reads excel for long-range context, structural variants, and assembly; within the latter, Revio is the only option here that balances length with acceptable accuracy.
+Among short reads, all three perform strongly, but Aviti performs a little ahead on base accuracy with comparable mapping to NovaSeq, while Onso shows little lower mapping yet the best mismatch profile of these three; in practice, NovaSeq and Aviti are both excellent for variant calling. Among long reads, PacBio Revio delivers the best balance of accuracy and consistency, whereas ONT datasets prioritize extreme length with noticeably higher error rates despite clean mapping behavior; they’re ideal for spanning repeats and structural variants, not fine-grained SNP work. Comparing between these two methods, short reads are superior for base-level accuracy and clean SNP/indel calling, while long reads win for structural variation and assembly.
 
-
+![alt text](IGV.png)
