@@ -26,11 +26,11 @@ cat design.csv | parallel --colsep , --header : --eta --lb -j 4 make bam TECH={t
 characterstics we covered:
 1. reads mapped / sequences and reads unmapped: Overall mappability. Higher is better. Compare as a percentage.
 
-2. error rate (mismatches / bases mapped [cigar]): Lower is better. This is your cross-platform headline.
+2. error rate (mismatches / bases mapped [cigar]): Lower is better.
 
-3. average quality: Sanity check that Phred scores align with error rate. Should roughly track.
+3. average quality: Sanity check that Phred scores align with error rate.
 
-4. reads MQ0 (count and fraction of mapped reads): Lower is better. High MQ0 screams ambiguous mappings.
+4. reads MQ0 (count and fraction of mapped reads): Lower is better. High MQ0 shows ambiguous mappings.
 
 5. supplementary alignments: Too many can indicate chimeras/adapter mess or ultra-fragmented mapping.
 
