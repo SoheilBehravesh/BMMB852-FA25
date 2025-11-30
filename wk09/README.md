@@ -1,0 +1,1 @@
+The week assignment was the revision of the week 8, since I submitted the week 8 assignment late so there were no revision for that
