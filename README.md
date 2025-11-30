@@ -8,7 +8,8 @@ Weekly assignments and other related files to the BMMB852 course taken in 2025 F
 - wk05 SRA
 - wk06 BAM
 - wk07 Wiggle
-- wk08 Automation + next week was revision
-- wk09 VCF
-- wk10 snpEff
-- wk11 GIAB
+- wk08 Automation
+- wk09 Revision (empty)
+- wk10 VCF
+- wk11 snpEff
+- wk12 GIAB
