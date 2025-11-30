@@ -1,5 +1,5 @@
 *Hello* **Dr. Albert**
-# Assignment for week 10
+# Assignment for week 11
 
 ### Overview
 This Makefile downloads a reference genome + annotation, downloads example reads, runs QC, aligns reads to produce a BAM, generates coverage (wiggle/bigWig), calls variants (VCF), and provides a small snpEff workflow to build a local annotation DB and annotate the VCF.
