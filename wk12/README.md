@@ -51,3 +51,10 @@ characterstics we covered:
 Among short reads, all three perform strongly, but Aviti performs a little ahead on base accuracy with comparable mapping to NovaSeq, while Onso shows little lower mapping yet the best mismatch profile of these three; in practice, NovaSeq and Aviti are both excellent for variant calling. Among long reads, PacBio Revio delivers the best balance of accuracy and consistency, whereas ONT datasets prioritize extreme length with noticeably higher error rates despite clean mapping behavior; they’re ideal for spanning repeats and structural variants, not fine-grained SNP work. Comparing between these two methods, short reads are superior for base-level accuracy and clean SNP/indel calling, while long reads win for structural variation and assembly. Additionally, we have to keep in mind that these statistics is specifically for that region of our interest. Maybe for other parts these stats would be different, for example the structure such as the number of repeats would affect the reading quality and they would have a better performance for other regions of the genome.
 
 ![alt text](IGV2-1.png)
+
+Updates: Three bam files of short read machines for the tumor samples (T) added to the design.csv file to look over the missing chunk of the dna in the T samples in more details, and ran the code again. The figure also updated with having the bw files of the added samples into the IGV. 
+although long read machines completely miss that part, short read sequencing machines have some low coverage for some part of the chunck as shown below.
+
+![alt text](IGV3-1.png)
+
+ At first I thought this part is deleted in the T samples, but since short read machines could read some part of it, the reason that this part is missing might be because this part of the genome of T samples is hard to read by the machines, especially long read machines. Am I on the right track or missing something? what could be other factors that might play a role? 
