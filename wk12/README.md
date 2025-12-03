@@ -57,4 +57,4 @@ although long read machines completely miss that part, short read sequencing mac
 
 ![alt text](IGV3-1.png)
 
- At first I thought this part is deleted in the T samples, but since short read machines could read some part of it, the reason that this part is missing might be because this part of the genome of T samples is hard to read by the machines, especially long read machines. Am I on the right track or missing something? Or the reads from short read machines could be resulted from mismatch? what could be other factors that might play a role? but could be this happen because of the setting of minimap2? I mean some noise because of the set up?
+ At first I thought this part is deleted in the T samples, but since short read machines could read some part of it, the reason that this part is missing might be because this part of the genome of T samples is hard to read by the machines, especially long read machines. Am I on the right track or missing something? Or the reads from short read machines could be resulted from mismatch? what could be other factors that might play a role?
