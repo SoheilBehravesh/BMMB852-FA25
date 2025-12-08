@@ -28,7 +28,7 @@ NAME=staphylcoc_aur
 
 # Parameters set for the specific reads
 # Bioproject number
-BPN=PRJNA224116 
+BPN=PRJNA887926 
 # SRR numbers
 SRR=SRR21835896
 # URL to download the reads
