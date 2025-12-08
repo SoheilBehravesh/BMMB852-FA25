@@ -1,0 +1,7 @@
+srr_id,sample,group
+SRR21835896,c_3,control
+SRR21835897,c_2,control
+SRR21835898,c_1,control
+SRR21835899,t_3,treatment
+SRR21835900,t_2,treatment
+SRR21835901,t_1,treatment
