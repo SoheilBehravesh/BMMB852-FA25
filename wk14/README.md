@@ -2,7 +2,7 @@
 # Assignment for week 14 - Perform an RNA-Seq differential gene expression study
 The ultimate goal of the assignment is to perform a differential gene expression analysis using RNA-seq. We are going to expand the previous week assignment of the Staphylococus aureus. For doing so, we will first generate the count matrix by Hisat2 from the last week code. Second, we will perform differential gene expression analysis using EdgeR and DESeq2 and evaluate the identified genes for each of them and generate PCA plot and heatmap for each of them. Finally, we will perform functional enrichment analysis using gProfiler and Enrichr.
 Please keep in mind that to perform the analysis I have eliminate the downsampling step (N=300000) because I wanted to test if I could reproduce the results. Therefore, If you wish to downsample the reads please add -X ${N} in front of the fastq-dump in the target of the reads in Makefile. The N is already preset to 300000 in the Makefile. or set the N to 179931 for 10x coverage.
-## Step 1: Generate the count matrix using Hisat2 and featureCounts (using the code from last week
+### Step 1: Generate the count matrix using Hisat2 and featureCounts (using the code from last week)
 ```bash
 # create the design file manually by acquiring the srr numbers of the reads for the study and then add 'sample' and 'group' columns so the downstream analysis can be perform and understand which sample belongs to which group.
 # or get the data design from the project number. in that case add two columns as 'sample' and 'group' to the csv file for the downstream analysis
