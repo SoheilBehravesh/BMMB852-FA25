@@ -44,14 +44,14 @@ now, let's generat PCA plot from the count data file produced by edger:
 ```bash
 src/r/plot_pca.r -c edger.csv -d design.csv -o pca.pdf
 ```
-[text](vscode-local:/Ubuntu/home/biouser/BMMB852-FA25/wk14/pca.pdf)
+![alt text](pca.jpg)
 the pca plot is better than the downsampled one from the last week. but still the replicates are not cluster well and they overlapped. maybe because of low number of genes? PC1 explain 58% and PC2 explains 14%. the overall variance explanation looks good.
 
 Now, let's generate heatmap for that:
 ```bash
 src/r/plot_heatmap.r -c edger.csv -d design.csv -o heatmap.pdf
 ```
-[text](vscode-local:/Ubuntu/home/biouser/BMMB852-FA25/wk14/heatmap.pdf)
+![alt text](heatmap.jpg)
 Since the heatmap z-scored the counts so each number in the heatmap indicates how many standard deviations the expression level of a gene in a sample is from the mean expression level of that gene across other samples. The green lower expression and the red higher expression. the dark indicated the expression around the mean. so SAUSA300_RS02390 gene (last row) could be upregulated by the treatment.
 
 You can print were differentially expressed genes found by edger using:
