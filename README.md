@@ -13,3 +13,6 @@ Weekly assignments and other related files to the BMMB852 course taken in 2025 F
 - wk10 VCF
 - wk11 snpEff
 - wk12 GIAB
+- wk13 Genome-based RNA-seq count matrix
+- wk14 RNA-Seq differential gene expression study
+- wk15 Epigenomic mapping
