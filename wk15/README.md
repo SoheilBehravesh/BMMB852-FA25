@@ -10,7 +10,6 @@ We aim to reproduce the findings from the paper. First, in order to focus and de
 Prepare the environment and necessary files
 ```bash
 micromamba activate bioinfo
-wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr22.fa.gz
 touch README.md
 touch Makefile
 touch design.csv
@@ -19,7 +18,18 @@ Running the following line of code will create a folder *src* that contains diff
 ```bash
 bio code
 ```
-
-
-
+Now, let's start using the pre prepared Makefiles. The first step is to download the reference data (FASTA) which is for now is only chromosome 22. We are going to use the *curl.mk* makefile.
+```bash
+URL=https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr22.fa.gz
+make -f src/run/curl.mk URL=${URL} run
+```
+The downloaded reference is a gzip file, but for the downstream analysis, the samtools needs a bgzip file. Therefore, we have to recompress the gzip file to bgzip file by the *bgzip.mk* makefile.
+```bash
+REF=refs/chr22.fa.gz
+make -f src/run/bgzip.mk FILE=${REF} run
+```
+Now, we have to index the reference genome by *bwa* to align the reads (which will be downloaded in the next step) to the reference genome, chromosome 22 here.
+```bash
+make -f src/run/bwa.mk REF=${REF} index
+```
 
