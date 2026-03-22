@@ -70,6 +70,8 @@ micromamba install -c conda-forge -c bioconda macs3
 # run the macs3 tool in the peak environment
 micromamba run -n peak macs3 callpeak -t ${BAM} --outdir peak
 ```
+![alt text](chip_seq_IGV-1.png)
+
 
 by the following code I can rerun the whole process for another dataset:
 ```bash
