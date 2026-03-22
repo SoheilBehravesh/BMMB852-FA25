@@ -75,4 +75,8 @@ by the following code I can rerun the whole process for another dataset:
 ```bash
 make SRR=SRR17653521 SAMPLE=sample2 all
 ```
-
+The makefile contain the code for the steps:
+- download, recompress, and index the reference genome
+- download the reads
+- align the reads to the reference genome and create coverage tracks
+- call peaks using MACS3
