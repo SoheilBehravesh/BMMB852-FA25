@@ -34,11 +34,11 @@ make -f src/run/bwa.mk REF=${REF} index
 ```
 Now let's move on by downloading the reads. We are going to download just 1M reads. The study used single-end reads, that's why we will have one reaad file per sample.
 ```bash
-N=1000000
-# the path to read 1
+N=10000000
+# the path to read 10
 R1=reads/sample1_pair1.fastq
 
-# download 1M reads from SRR17653520
+# download 10M reads from SRR17653520
 make -f src/run/sra.mk \
     SRR=SRR17653520 \
     N=${N} \
@@ -53,6 +53,9 @@ BAM=bam/sample1.bam
 # align the reads to the reference genome
 make -f src/run/bwa.mk REF=${REF} R1=${R1} BAM=${BAM} align
 ```
+Filter BAM files to the repetitive reads
+
+
 Since, the BAM files do not show on IGV at the default zoom level, we will create coverage tracks which is BigWig files. The enables us to visualize alignemnts coverage across the genome.
 ```bash
 make -f src/run/coverage.mk BAM=${BAM} REF=${REF} run
@@ -62,6 +65,21 @@ Now we have to do the peak calling to identify the regions in the genome that ar
 ```bash
 # create the environment for macs2
 micromamba create -n peak -y macs2
+# or conda install -c bioconda macs2 gffread -y
+# macs2 callpeak \
+#     -t BAM # denotes the file is BAM \
+#     -g hs # denotes the genome is from hs \
+#     -n SRR... # is the name of the output \
+#     --outdir ~/BMMB-F25...  # the output directory \
+#     -B # denotes that we want to keep the bedgraph
+
+# in the output file if you have .narrowpeak we probably dealing with TFs \
+# and if we have .broadpeak file we probably dealing with hisnote methylation
+# the peaks.xls is exactly same as narrowpeak file except it has a column and row format that can be opened in excel 
+# the summits.bed file contains the summits info of the peaks which is the higherst point of the peaks
+# the model.R files can produce plots to visualize in R
+# .bdg file contain important information that can be converted to bigwig files for visualization
+
 
 micromamba activate peak
 micromamba remove macs2
@@ -73,7 +91,7 @@ micromamba run -n peak macs3 callpeak -t ${BAM} --outdir peak
 ![alt text](chip_seq_IGV-1.png)
 
 
-by the following code I can rerun the whole process for another dataset:
+The makefile in thise week contains all of the steps required for peak calling. by the following code I can rerun the whole process for another dataset:
 ```bash
 make SRR=SRR17653521 SAMPLE=sample2 all
 ```
